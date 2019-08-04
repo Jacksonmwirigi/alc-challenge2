@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "878094677715",
+    "firebase_url": "https://jacklab-dca5b.firebaseio.com",
+    "project_id": "jacklab-dca5b",
+    "storage_bucket": "jacklab-dca5b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878094677715:android:e44b5121cc014a3b",
+        "android_client_info": {
+          "package_name": "com.techweezy.traveldeals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "878094677715-f2hfslg75mprsocs8nlmsa3jo26gn014.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techweezy.traveldeals",
+            "certificate_hash": "4a56f406d99322605ee58c9d70c1dcb7527fe463"
+          }
+        },
+        {
+          "client_id": "878094677715-o7vrt88frb2hkjv612hb2226heminb9f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf0IiAwGiuzgJyHPAE_dDilwVQmPI7Nps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "878094677715-o7vrt88frb2hkjv612hb2226heminb9f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878094677715:android:5411726ab7a1be6f",
+        "android_client_info": {
+          "package_name": "com.techweezy.travelmantics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "878094677715-av4drgan7351sq272lbtsuq2gbg0ofdk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techweezy.travelmantics",
+            "certificate_hash": "4a56f406d99322605ee58c9d70c1dcb7527fe463"
+          }
+        },
+        {
+          "client_id": "878094677715-o7vrt88frb2hkjv612hb2226heminb9f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCf0IiAwGiuzgJyHPAE_dDilwVQmPI7Nps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "878094677715-o7vrt88frb2hkjv612hb2226heminb9f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
