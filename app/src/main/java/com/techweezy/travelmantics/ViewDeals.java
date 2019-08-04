@@ -38,7 +38,6 @@ public class ViewDeals extends AppCompatActivity {
         setContentView(R.layout.activity_view_deals);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

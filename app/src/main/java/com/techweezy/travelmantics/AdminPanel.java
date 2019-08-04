@@ -2,6 +2,7 @@ package com.techweezy.travelmantics;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,18 +25,23 @@ import com.squareup.picasso.Picasso;
 import com.techweezy.travelmantics.model.TravelDeals;
 import com.techweezy.travelmantics.utils.FirebaseUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
+
 public class AdminPanel extends AppCompatActivity {
 
     EditText price_et, desc, deal_name;
     Button selectBtn;
     ImageView imageView;
-
-
     public static final int IMAGE_REQUEST_ID =100;  //Camera/image Request code.
     String imageString;
     String imageName;
+    Uri imageUri=null;
 
-    /**Firebase variables**/
     FirebaseDatabase mFireDb;
     DatabaseReference dbRef;
 
@@ -60,10 +66,10 @@ public class AdminPanel extends AppCompatActivity {
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/jpeg");
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(intent.createChooser(intent, "select image"), IMAGE_REQUEST_ID);
+                Intent galleryintent = new Intent (Intent.ACTION_GET_CONTENT);
+                galleryintent.setType("image/* ");
+                startActivityForResult(galleryintent.createChooser
+                        (galleryintent,"select image"), IMAGE_REQUEST_ID);
             }
         });
     }
@@ -108,19 +114,25 @@ public class AdminPanel extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMAGE_REQUEST_ID && resultCode == RESULT_OK) {
-            displaySelctedImage(imageString);
+        if (requestCode == IMAGE_REQUEST_ID ) {
+            displaySelectedImage(imageString);
             imageString = "upload";
             selectBtn.setText("Loading Image...");
             selectBtn.setEnabled(false);
-            Uri imageUri = data.getData();
-            final StorageReference ref = FirebaseUtil.mStoragereference.child(imageUri.getLastPathSegment());
-            ref.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            imageUri = data.getData();
+            saveToFirebase();
+        }
+    }
+
+    public void saveToFirebase(){
+
+        final StorageReference ref = FirebaseUtil.mStoragereference.
+            child(Objects.requireNonNull(imageUri.getLastPathSegment()));
+            ref.putFile(imageUri).
+                    addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     imageName = taskSnapshot.getStorage().getPath();
@@ -128,25 +140,26 @@ public class AdminPanel extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             imageString = uri.toString();
-                            displaySelctedImage(imageString);
+                            displaySelectedImage(imageString);
                             selectBtn.setText("Please Select Image.");
                             selectBtn.setEnabled(true);
-                            Toast.makeText(getApplicationContext(), "Image uploaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),
+                                    "Image uploaded", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    double progress = (100.0 * taskSnapshot.
+                            getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                     int yx = (int) progress;
                     String prog = "Uploading " + yx + "%";
                     selectBtn.setText(prog);
                 }
             });
-        }
     }
-    private void displaySelctedImage(String url){
+    private void displaySelectedImage(String url){
         if (url != null && url.isEmpty() == false){
             Picasso.get()
                     .load(url)
