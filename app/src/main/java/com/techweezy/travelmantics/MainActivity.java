@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
                 Toast.makeText(this, "Sign In Failed", Toast.LENGTH_SHORT).show();
-                this.recreate();
+
             }
         }
     }

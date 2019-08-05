@@ -29,6 +29,7 @@ public class ViewDeals extends AppCompatActivity {
     ArrayList<TravelDeals> travelDeals;
     FirebaseDatabase mDatabase;
     DatabaseReference mDbRef;
+    FirebaseUtil firebaseUtil;
     ChildEventListener childEventListener;
     private static final int SIGN_IN_REQ = 10;
 
@@ -36,6 +37,9 @@ public class ViewDeals extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_deals);
+
+        firebaseUtil= new FirebaseUtil();
+
     }
 
     @Override
@@ -82,7 +86,7 @@ public class ViewDeals extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        FirebaseUtil.openReference("traveldeals", this);
+        firebaseUtil.openReference("traveldeals", this);
         RecyclerView recyclerView = findViewById(R.id.dealsRecyclerView);
         DealsAdapter dealsAdapter  = new DealsAdapter(this);
         recyclerView.setAdapter(dealsAdapter);

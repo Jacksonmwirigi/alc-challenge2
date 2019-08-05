@@ -21,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.techweezy.travelmantics.R;
-import com.techweezy.travelmantics.ViewDeals;
 import com.techweezy.travelmantics.model.TravelDeals;
 import com.techweezy.travelmantics.utils.FirebaseUtil;
 
@@ -39,7 +38,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder
 
         this.context = context;
         fireDb = FirebaseUtil.database;
-        mRef = FirebaseUtil.myRef;
+        mRef = FirebaseUtil.mReff;
         travelDeals = FirebaseUtil.travelDeals;
         travelDeals.clear();
         dialog = new ProgressDialog(context);

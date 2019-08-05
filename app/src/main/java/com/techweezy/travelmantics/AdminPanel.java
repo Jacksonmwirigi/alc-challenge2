@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.annotations.Nullable;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -40,11 +41,11 @@ public class AdminPanel extends AppCompatActivity {
     public static final int IMAGE_REQUEST_ID =100;  //Camera/image Request code.
     String imageString;
     String imageName;
-    Uri imageUri=null;
 
     FirebaseDatabase mFireDb;
     DatabaseReference dbRef;
-
+    FirebaseStorage mFiretorage;
+    StorageReference storageReference;
     TravelDeals travelDeals;
 
     @Override
@@ -52,8 +53,8 @@ public class AdminPanel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_panel);
 
-        mFireDb = FirebaseUtil.database;
-        dbRef = FirebaseUtil.myRef;
+        mFireDb = FirebaseDatabase.getInstance();
+        dbRef = mFireDb.getReference().child("traveldeals");
 
         deal_name=(EditText)findViewById(R.id.place_nameET);
         price_et=(EditText)findViewById(R.id.place_priceET);
@@ -62,6 +63,11 @@ public class AdminPanel extends AppCompatActivity {
         imageView =(ImageView)findViewById(R.id.imageView1);
 
         imageString="null";
+
+
+        mFiretorage = FirebaseStorage.getInstance();
+        storageReference  = mFiretorage.getReference();
+
 
         selectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,9 +104,11 @@ public class AdminPanel extends AppCompatActivity {
         String descritpion_str=desc.getText().toString().trim();
 
         if(imageString.equals("upload")){
-            Toast.makeText(this, "Uploading Your Image...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Uploading Your Image...",
+                    Toast.LENGTH_SHORT).show();
         }else if (imageString.equals("null")) {
-            Toast.makeText(this, "Please Select an Image...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please Select an Image...",
+                    Toast.LENGTH_SHORT).show();
         }else{
             travelDeals = new TravelDeals();
             travelDeals.setPlace_name(name_str);
@@ -114,51 +122,59 @@ public class AdminPanel extends AppCompatActivity {
         }
     }
 
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMAGE_REQUEST_ID ) {
+        if (requestCode == IMAGE_REQUEST_ID && resultCode == RESULT_OK) {
             displaySelectedImage(imageString);
             imageString = "upload";
             selectBtn.setText("Loading Image...");
             selectBtn.setEnabled(false);
-            imageUri = data.getData();
-            saveToFirebase();
+            Uri imageUri = data.getData();
+
+            if (imageUri !=null){
+                final StorageReference ref = storageReference
+                        .child("images/"+ UUID.randomUUID().toString());
+                ref.putFile(imageUri)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                imageName = taskSnapshot.getStorage().getPath();
+                                ref.getDownloadUrl()
+                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        imageString = uri.toString();
+                                        displaySelectedImage(imageString);
+                                        selectBtn.setText("Select Image...");
+                                        selectBtn.setEnabled(true);
+                                        Toast.makeText(AdminPanel.this,
+                                                "Upload Successful",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (100.0 * taskSnapshot.
+                                getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                        int yx = (int) progress;
+                        String prog = "Uploading " + yx + "%";
+                        selectBtn.setText(prog);
+                    }
+                });
+
+            }
+            else {
+                Toast.makeText(this, "No URI data", Toast.LENGTH_SHORT).show();
+            }
+
+
         }
     }
 
-    public void saveToFirebase(){
-
-        final StorageReference ref = FirebaseUtil.mStoragereference.
-            child(Objects.requireNonNull(imageUri.getLastPathSegment()));
-            ref.putFile(imageUri).
-                    addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    imageName = taskSnapshot.getStorage().getPath();
-                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            imageString = uri.toString();
-                            displaySelectedImage(imageString);
-                            selectBtn.setText("Please Select Image.");
-                            selectBtn.setEnabled(true);
-                            Toast.makeText(getApplicationContext(),
-                                    "Image uploaded", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progress = (100.0 * taskSnapshot.
-                            getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                    int yx = (int) progress;
-                    String prog = "Uploading " + yx + "%";
-                    selectBtn.setText(prog);
-                }
-            });
-    }
     private void displaySelectedImage(String url){
         if (url != null && url.isEmpty() == false){
             Picasso.get()
