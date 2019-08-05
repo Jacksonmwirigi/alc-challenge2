@@ -27,11 +27,11 @@ public class FirebaseUtil {
     public static FirebaseAuth mAuth;
     public static FirebaseAuth.AuthStateListener mAuthstatelistener;
     private static final int RC_SIGN_IN = 102;
-    private static ViewDeals caller;
+    public static ViewDeals caller;
     public static boolean isAdmin;
     public static FirebaseStorage mFiretorage;
     public static StorageReference storageReference;
-    public FirebaseUtil(){}
+    private FirebaseUtil(){}
 
     public static   void openReference(String mref, final ViewDeals callerActivity){
         if(firebaseUtil==null){

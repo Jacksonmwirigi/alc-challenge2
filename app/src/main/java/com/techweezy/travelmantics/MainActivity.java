@@ -49,8 +49,9 @@ public class MainActivity extends AppCompatActivity {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
-                    Toast.makeText(this, "Welcome " + " "+user.getEmail(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(),AdminPanel.class));
+                    Toast.makeText(this, "Welcome " + " "+user.getEmail(),
+                            Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(),ViewDeals.class));
                     finish();
                 }
 

@@ -133,35 +133,31 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int position) {
+    public void onBindViewHolder( MyViewHolder myViewHolder, int position) {
         TravelDeals deals = travelDeals.get(position);
-        myViewHolder.bind(deals);
+        myViewHolder.place_name.setText(deals.getPlace_name());
+        myViewHolder.description.setText(deals.getDescription());
+        myViewHolder.price.setText(deals.getPrice());
+        displayImage(deals.getImageUrl());
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return travelDeals.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView title, description, price;
+        TextView place_name, description, price;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.title);
+            place_name = itemView.findViewById(R.id.placeTV);
             description = itemView.findViewById(R.id.descriptionTV);
             price = itemView.findViewById(R.id.priceTV);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.deal_imageView);
             itemView.setOnClickListener(this);
 
-
-        }
-        public void bind(TravelDeals deal){
-            title.setText(deal.getPlace_name());
-            description.setText(deal.getDescription());
-            price.setText(deal.getPrice());
-            displayImage(deal.getImageUrl());
         }
 
         @Override
@@ -171,7 +167,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder
     }
 
     private void displayImage(String url){
-        if (url != null && url.isEmpty() == false){
+        if (url != null && !url.isEmpty()){
             Picasso.get()
                     .load(url)
                     .placeholder(R.drawable.beach)

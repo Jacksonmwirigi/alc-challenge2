@@ -26,19 +26,12 @@ import java.util.ArrayList;
 
 public class ViewDeals extends AppCompatActivity {
 
-    ArrayList<TravelDeals> travelDeals;
-    FirebaseDatabase mDatabase;
-    DatabaseReference mDbRef;
-    FirebaseUtil firebaseUtil;
-    ChildEventListener childEventListener;
     private static final int SIGN_IN_REQ = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_deals);
-
-        firebaseUtil= new FirebaseUtil();
 
     }
 
@@ -66,7 +59,8 @@ public class ViewDeals extends AppCompatActivity {
                         .signOut(this)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             public void onComplete( Task<Void> task) {
-                                Toast.makeText(getApplicationContext(), "Logging Out!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),
+                                        "Logging Out!", Toast.LENGTH_SHORT).show();
                                 FirebaseUtil.attachListener();
                             }
                         });
@@ -86,11 +80,13 @@ public class ViewDeals extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        firebaseUtil.openReference("traveldeals", this);
+        FirebaseUtil.openReference("traveldeals", this);
         RecyclerView recyclerView = findViewById(R.id.dealsRecyclerView);
         DealsAdapter dealsAdapter  = new DealsAdapter(this);
         recyclerView.setAdapter(dealsAdapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(this,
+                        RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         FirebaseUtil.attachListener();
@@ -113,7 +109,7 @@ public class ViewDeals extends AppCompatActivity {
                     public void run() {
                         showMenu();
                     }
-                },5000);
+                },3000);
             } else {
 
             }

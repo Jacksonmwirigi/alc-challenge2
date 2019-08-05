@@ -3,27 +3,12 @@ package com.techweezy.travelmantics.model;
 import java.io.Serializable;
 
 public class TravelDeals implements Serializable {
-    private String id;
-    private String place_name;
-    private String description;
-    private String price;
-    private String imageUrl;
-    private String imageName;
+    private String id, imageName,
+            place_name, description,
+            price,imageUrl;
 
-    public TravelDeals(){}
-    public TravelDeals(String id,String place_name,
-                       String description, String price,
-                       String imageUrl, String imageName) {
-        this.setId(id);
-        this.setPlace_name(place_name);
-        this.setDescription(description);
-        this.setPrice(price);
-        this.setImageUrl(imageUrl);
-        this.setImageName(imageName);
-
+    public TravelDeals() {
     }
-
-
 
     public String getId() {
         return id;
@@ -31,6 +16,14 @@ public class TravelDeals implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
     public String getPlace_name() {
@@ -65,11 +58,4 @@ public class TravelDeals implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public String getImageName() {
-        return imageName;
-    }
-
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
 }
