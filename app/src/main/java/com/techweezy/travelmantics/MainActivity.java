@@ -56,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
                 Toast.makeText(this, "Sign In Failed", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(),SignUp.class));
-                finish();
+                this.recreate();
             }
         }
     }

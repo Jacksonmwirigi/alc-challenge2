@@ -18,9 +18,6 @@
             android:name=".AdminPanel"
             android:label="Travelmantics"/>
         <activity
-            android:name=".SignUp"
-            android:label="Sign Up"/>
-        <activity
             android:name=".MainActivity"
             android:label="Travelmantics">
             <intent-filter>

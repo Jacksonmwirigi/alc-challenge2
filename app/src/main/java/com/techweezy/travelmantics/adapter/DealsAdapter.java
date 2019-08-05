@@ -36,7 +36,7 @@ public class DealsAdapter extends RecyclerView.Adapter<DealsAdapter.MyViewHolder
     ImageView imageView;
     ProgressDialog dialog;
     public DealsAdapter(final Context context){
-        //  FirebaseUtil.openReference("traveldeals");
+
         this.context = context;
         fireDb = FirebaseUtil.database;
         mRef = FirebaseUtil.myRef;
