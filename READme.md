@@ -3,4 +3,4 @@
 ## This challenge tests knowledge in developing mobile apps with Firebase.   
 ### bellow are the screenshots of the  ALC app. 
 
-![Screenshots](https://drive.google.com/open?id=12aD4a2q6M4Cg1KS15F-Kf4afYjkKMrBy)
+[See screenshots ](https://drive.google.com/open?id=12aD4a2q6M4Cg1KS15F-Kf4afYjkKMrBy)
